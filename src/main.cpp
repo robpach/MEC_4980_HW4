@@ -6,6 +6,10 @@ int hourStep = 9;
 int hourDir = 10;
 int minuteStep = 11;
 int minuteDir = 12;
+int hourLimit = 5;
+int minuteLimit = 6; // change if necessary
+bool hourLimitState = false;
+bool minuteLimitState = false;
 
 int hourSteps = 0;
 int minuteSteps = 0;
@@ -24,6 +28,74 @@ float minute;
 int seconds;
 unsigned long lastUpdate = 0;
 
+void StepHour(int amount, int dir)
+{
+  for (int i = 1; i <= amount; i++)
+  {
+    digitalWrite(hourDir, dir);
+    digitalWrite(hourStep, HIGH);
+    delay(stepInterval);
+    digitalWrite(hourStep, LOW);
+    delay(stepInterval);
+    if (dir == 1)
+    {
+      hourSteps++;
+    }
+    else
+    {
+      hourSteps--;
+    }
+  }
+
+  hourSteps = hourSteps % 200;
+}
+
+void StepMinute(int amount, int dir)
+{
+  for (int i = 1; i <= amount; i++)
+  {
+    digitalWrite(minuteDir, dir);
+    digitalWrite(minuteStep, HIGH);
+    delay(stepInterval);
+    digitalWrite(minuteStep, LOW);
+    delay(stepInterval);
+    if (dir == 1)
+    {
+      minuteSteps++;
+    }
+    else
+    {
+      minuteSteps--;
+    }
+  }
+
+  minuteSteps = minuteSteps % 200;
+}
+
+// Homing Function
+void Home()
+{
+  hourLimitState = digitalRead(hourLimit);
+  minuteLimitState = digitalRead(minuteLimit);
+
+  while (!hourLimitState)
+  {
+    hourLimitState = digitalRead(hourLimit);
+    StepHour(1,1);
+    delay(20);
+  }
+  hourSteps = 0;
+
+  while (!minuteLimitState)
+  {
+    minuteLimitState = digitalRead(minuteLimit);
+    StepMinute(1,1);
+    delay(20);
+  }
+  minuteSteps = 0;
+}
+
+
 void setup()
 {
   delay(500);
@@ -35,7 +107,8 @@ void setup()
   pinMode(minuteStep, OUTPUT);
   pinMode(minuteDir, OUTPUT);
   digitalWrite(minuteDir, HIGH);
-  pinMode(13, OUTPUT);
+  pinMode(hourLimit, INPUT_PULLDOWN);
+  pinMode(minuteLimit, INPUT_PULLDOWN);
 
   WiFi.begin("NSA Security Van HQ", "windowstothehallway");
   while (WiFi.status() != WL_CONNECTED)
@@ -45,61 +118,11 @@ void setup()
   }
 
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+
+  // Create a homing function
+  // Home();
 }
 
-void StepHour(int amount, int dir)
-{
-  for (int i = 1; i <= amount; i++)
-  {
-    digitalWrite(13,HIGH);
-    digitalWrite(hourDir, dir);
-    digitalWrite(hourStep, HIGH);
-    delay(stepInterval);
-    digitalWrite(hourStep, LOW);
-    delay(stepInterval);
-    digitalWrite(13,LOW);
-    if (digitalRead(hourDir) == 1)
-    {
-      hourSteps++;
-    }
-    else
-    {
-      hourSteps--;
-    }
-  }
-
-  if ((hourSteps % 200) == 0)
-  {
-    hourSteps = 0;
-  }
-}
-
-void StepMinute(int amount, int dir)
-{
-  for (int i = 1; i <= amount; i++)
-  {
-    digitalWrite(13, HIGH);
-    digitalWrite(minuteDir, dir);
-    digitalWrite(minuteStep, HIGH);
-    delay(stepInterval);
-    digitalWrite(minuteStep, LOW);
-    delay(stepInterval);
-    digitalWrite(13, LOW);
-    if (digitalRead(minuteDir) == 1)
-    {
-      minuteSteps++;
-    }
-    else
-    {
-      minuteSteps--;
-    }
-  }
-
-  if ((minuteSteps % 200) == 0)
-  {
-    minuteSteps = 0;
-  }
-}
 
 void loop()
 {
@@ -124,24 +147,33 @@ void loop()
 
   // Hour Movement
   adjustedHour = (float)(hour % 12);
-  desiredHourStep = round((adjustedHour * 200.0) / 12.0);
-  if (hourSteps < desiredHourStep)
+  desiredHourStep = (int)(200 - round((adjustedHour * 200.0) / 12.0)) % 200;
+  int diffHour = (desiredHourStep - hourSteps + 200) % 200;
+  if (diffHour == 0)
+  {
+  }
+  else if (diffHour < 100)
   {
     StepHour(1, 1);
   }
-  else if (hourSteps > desiredHourStep)
+  else
   {
-    StepHour(1, -1);
+    StepHour(1, 0);
   }
 
   // Minute Movement
-  desiredMinuteStep = round((minute * 200.0) / 60.0); // replace minute with seconds to test
-  if (minuteSteps < desiredMinuteStep)
+  desiredMinuteStep = (int)(200 - round((seconds * 200.0) / 60.0)) % 200; // replace minute with seconds to test
+  int diffMin = (desiredMinuteStep - minuteSteps + 200) % 200;
+  if (diffMin == 0)
   {
-    StepMinute(1, 1);
+    // do nothing, already in place
   }
-  else if (minuteSteps > desiredMinuteStep)
+  else if (diffMin < 100)
   {
-    StepMinute(1, -1);
+    StepMinute(1, 1); // move forward
+  }
+  else
+  {
+    StepMinute(1, 0); // move backward
   }
 }

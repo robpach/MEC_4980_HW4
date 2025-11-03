@@ -10,6 +10,7 @@
             "includePath": [
                 "C:/Users/pachr/OneDrive - Milwaukee School of Engineering/Documents/PlatformIO/Projects/MEC_4980_HW4/include",
                 "C:/Users/pachr/OneDrive - Milwaukee School of Engineering/Documents/PlatformIO/Projects/MEC_4980_HW4/src",
+                "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/newlib/platform_include",
                 "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include",
                 "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include/esp_additions/freertos",
@@ -238,7 +239,6 @@
                 "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                 "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                 "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                 "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
@@ -249,6 +249,7 @@
                 "path": [
                     "C:/Users/pachr/OneDrive - Milwaukee School of Engineering/Documents/PlatformIO/Projects/MEC_4980_HW4/include",
                     "C:/Users/pachr/OneDrive - Milwaukee School of Engineering/Documents/PlatformIO/Projects/MEC_4980_HW4/src",
+                    "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/newlib/platform_include",
                     "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include",
                     "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include/esp_additions/freertos",
@@ -477,7 +478,6 @@
                     "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                     "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                     "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                    "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                     "C:/Users/pachr/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
